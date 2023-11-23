@@ -1,21 +1,23 @@
-const comPic = document.querySelector(".comPic");
-const myPicR = document.querySelector(".myPicR");
-const myPicS = document.querySelector(".myPicS");
-const myPicP = document.querySelector(".myPicP");
+const API_KEY = "022c44fda65f777ac64bc741ad25b005";
 
-const RSP = ["묵", "찌", "빠"];
+// https://openweathermap.org/current
 
-function randomPic() {
-  const randomNum = Math.floor(Math.random() * 3);
-  const randomRSP = RSP[randomNum];
-  return randomRSP;
+function onGeoOk(position) {
+  const lat = position.coords.latitude;
+  const lng = position.coords.longitude;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const weather = document.querySelector("#weather div:first-child");
+      const city = document.querySelector("#weather div:last-child");
+      console.log(data.weather[0].main);
+      city.innerText = `${data.name}`;
+      weather.innerText = data.weather[0].main;
+    });
+}
+function onGeoError() {
+  alert();
 }
 
-function mainFunction() {
-  const randomRSP = randomPic();
-  comPic.innerText = randomRSP;
-}
-
-myPicR.addEventListener("click", mainFunction);
-myPicS.addEventListener("click", mainFunction);
-myPicP.addEventListener("click", mainFunction);
+navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
