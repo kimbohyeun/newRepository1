@@ -1,24 +1,90 @@
-const API_KEY = "022c44fda65f777ac64bc741ad25b005";
+const orderMethod = document.getElementById("orderMethod");
+const orderMethodPic = document.getElementById("orderMethodPic");
+const totalOrder = document.getElementById("totalOrder");
+const totalPrice = document.getElementById("totalPrice");
+const food1 = document.querySelector(".food1");
+const food2 = document.querySelector(".food2");
+const food3 = document.querySelector(".food3");
+const food4 = document.querySelector(".food4");
+const food5 = document.querySelector(".food5");
 
-// https://openweathermap.org/current
+let price = 0;
 
-async function onGeoOk(position) {
-  const lat = position.coords.latitude;
-  const lng = position.coords.longitude;
-
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  // const data = await fetch(url).then((response) => response.json());
-  const weather = document.querySelector("#weather div:first-child");
-  const city = document.querySelector("#weather div:last-child");
-  console.log(data);
-  // console.log(data.weather[0].main);
-  city.innerText = `${data.name}`;
-  weather.innerText = data.weather[0].main;
+function totalPriceCal() {
+  let currentPrice = 0;
+  if (orderMethodPic.value == 0) {
+    currentPrice = price + 5000;
+    totalPrice.innerText = `최종 금액 : ${currentPrice}원`;
+  } else if (orderMethodPic.value == 1) {
+    currentPrice = price * 0.8;
+    totalPrice.innerText = `최종 금액 : ${currentPrice}원`;
+  } else {
+    totalPrice.innerText = `주문방식을 선택해주세요.`;
+  }
 }
-function onGeoError() {
-  alert();
+
+function orderMP() {
+  let OP = orderMethod.selectedIndex;
+  if (OP == 0) {
+    orderMethodPic.innerText = `배달 주문! (추가비용 5000원)`;
+    orderMethodPic.value = 0;
+  } else {
+    orderMethodPic.innerText = `방문포장! (20퍼센트 할인!)`;
+    orderMethodPic.value = 1;
+  }
+  totalPriceCal();
 }
 
-navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+function food1F() {
+  if (food1.checked) {
+    price += parseInt(food1.value);
+  } else {
+    price -= parseInt(food1.value);
+  }
+  totalOrder.innerText = `선택 음식 금액 : ${price}원`;
+  totalPriceCal();
+}
+function food2F() {
+  if (food2.checked) {
+    price += parseInt(food2.value);
+  } else {
+    price -= parseInt(food2.value);
+  }
+  totalOrder.innerText = `선택 음식 금액 : ${price}원`;
+  totalPriceCal();
+}
+function food3F() {
+  if (food3.checked) {
+    price += parseInt(food3.value);
+  } else {
+    price -= parseInt(food3.value);
+  }
+  totalOrder.innerText = `선택 음식 금액 : ${price}원`;
+  totalPriceCal();
+}
+function food4F() {
+  if (food4.checked) {
+    price += parseInt(food4.value);
+  } else {
+    price -= parseInt(food4.value);
+  }
+  totalOrder.innerText = `선택 음식 금액 : ${price}원`;
+  totalPriceCal();
+}
+function food5F() {
+  if (food5.checked) {
+    price += parseInt(food5.value);
+  } else {
+    price -= parseInt(food5.value);
+  }
+  totalOrder.innerText = `선택 음식 금액 : ${price}원`;
+  totalPriceCal();
+}
+
+totalPriceCal();
+orderMethod.addEventListener("click", orderMP);
+food1.addEventListener("change", food1F);
+food2.addEventListener("change", food2F);
+food3.addEventListener("change", food3F);
+food4.addEventListener("change", food4F);
+food5.addEventListener("change", food5F);
